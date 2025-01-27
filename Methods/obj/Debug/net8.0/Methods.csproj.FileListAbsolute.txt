@@ -12,3 +12,4 @@ C:\Users\Semen\RiderProjects\Methods\Methods\obj\Debug\net8.0\refint\Methods.dll
 C:\Users\Semen\RiderProjects\Methods\Methods\obj\Debug\net8.0\Methods.pdb
 C:\Users\Semen\RiderProjects\Methods\Methods\obj\Debug\net8.0\Methods.genruntimeconfig.cache
 C:\Users\Semen\RiderProjects\Methods\Methods\obj\Debug\net8.0\ref\Methods.dll
+C:\Users\Semen\RiderProjects\Methods\Methods\obj\Debug\net8.0\Methods.sourcelink.json
