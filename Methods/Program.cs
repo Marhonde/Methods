@@ -106,7 +106,7 @@ class Program : Python
                     _n = int.Parse(input("Введите кол-во элементов в массивах: "));
                     
                     _doubleArray = GenerateDoubleArray(_n, 0, 51);
-                    _doubleArray1 = GenerateDoubleArray(4, 0, 51);
+                    _doubleArray1 = GenerateDoubleArray(_n, 0, 51);
                     _doubleArray2 = GenerateDoubleArray(_n, 0, 51);
                     
                     PrintArr("1-ый массив", _doubleArray);
@@ -139,7 +139,9 @@ class Program : Python
     /// <param name="array">Массив для значений p.</param>
     /// <param name="array1">Массив для значений q.</param>
     /// <param name="array2">Массив для значений r.</param>
-    /// <exception cref="ArgumentException">Значение p должно быть больше 0</exception>
+    /// <exception cref="ArgumentException">
+    /// Значение p не должно равняться 0.
+    /// </exception>
     private static void SolvingGroupQuadEquations(double[] array, double[] array1, double[] array2)
     {
         if (array.Length != array1.Length && array1.Length != array2.Length && array.Length != array1.Length)
@@ -171,7 +173,7 @@ class Program : Python
             }
             else
             {
-                throw new ArgumentException("Значение p должно быть больше 0");
+                throw new ArgumentException("Значение p не должно равняться 0");
             }
         }
     }
