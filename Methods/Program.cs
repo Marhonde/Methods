@@ -6,6 +6,8 @@ class Program : Python
     
     private static int[]? _array, _array2;
     
+    private static double[]? _doubleArray, _doubleArray1, _doubleArray2;
+    
     private static int[,]? _matrix;
 
     private static int _n, _j, _i, _m;
@@ -94,12 +96,31 @@ class Program : Python
 
                     break;
                 case 6:
-                    _matrix = GenerateMatrix(5, 5, 0, 41);
-
-                    PrintMatrix(_matrix);
+                    _matrix = PrintGenerateMatrix(5, 5, 0, 41);
                     
                     print($"\nМаксимальный элемент матрицы: {MaxElementInMatrix(_matrix)}");
                     print($"Кол-во вхождений максимального элемента в матрице: {CountOfMaxElement(_matrix, MaxElementInMatrix(_matrix))}");
+                    
+                    break;
+                case 7:
+                    _n = int.Parse(input("Введите кол-во элементов в массивах: "));
+                    
+                    _doubleArray = GenerateDoubleArray(_n, 0, 51);
+                    _doubleArray1 = GenerateDoubleArray(4, 0, 51);
+                    _doubleArray2 = GenerateDoubleArray(_n, 0, 51);
+                    
+                    PrintArr("1-ый массив", _doubleArray);
+                    PrintArr("2-ой массив", _doubleArray1);
+                    PrintArr("3-ий массив", _doubleArray2);
+
+                    try
+                    {
+                        SolvingGroupQuadEquations(_doubleArray, _doubleArray1, _doubleArray2);
+                    }
+                    catch (Exception e)
+                    {
+                        print(e.Message);
+                    }
                     
                     break;
                 case 0:
@@ -110,6 +131,82 @@ class Program : Python
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// Решает группу квадратных уравнений по элементам каждого массива.
+    /// </summary>
+    /// <param name="array">Массив для значений p.</param>
+    /// <param name="array1">Массив для значений q.</param>
+    /// <param name="array2">Массив для значений r.</param>
+    /// <exception cref="ArgumentException">Значение p должно быть больше 0</exception>
+    private static void SolvingGroupQuadEquations(double[] array, double[] array1, double[] array2)
+    {
+        if (array.Length != array1.Length && array1.Length != array2.Length && array.Length != array1.Length)
+            throw new ArgumentException("Кол-во элементов в массивах должно быть одинаково");
+        
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i] != 0)
+            {
+                var d = Math.Pow(array1[i], 2) - 4 * array[i] * array2[i];
+
+                if (d > 0)
+                {
+                    var result = (-array1[i] + Math.Sqrt(d)) / (2 * array[i]);
+                    var result1 = (-array1[i] - Math.Sqrt(d)) / (2 * array[i]);
+                    
+                    print($"Ответ {i + 1}-ых элементов = {result:F} и {result1:F}");
+                }
+                else if (d == 0)
+                {
+                    var result = -array1[i] / (2 * array[i]);
+                    
+                    print($"Ответ {i + 1} элементов = {result:F}");
+                }
+                else
+                {
+                    print("Корней нет");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Значение p должно быть больше 0");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Создает матрицу, заполненную случайными числами и выводит ее
+    /// </summary>
+    /// <param name="rows">Кол-во строк матрицы.</param>
+    /// <param name="columns">Кол-во столбцов матрицы.</param>
+    /// <param name="minValue">Минимальное значение.</param>
+    /// <param name="maxValue">Максимальное значение</param>
+    /// <returns>Двумерный массив.</returns>
+    private static int[,] PrintGenerateMatrix(int rows, int columns, int minValue, int maxValue)
+    {
+        Random rand = new Random();
+        int[,] matrix = new int[rows, columns];
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                matrix[i, j] = rand.Next(minValue, maxValue);
+            }
+        }
+        
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                Console.Write(matrix[i,j] + "\t");
+            }
+            print();
+        }
+        
+        return matrix;
     }
 
     /// <summary>
@@ -259,7 +356,7 @@ class Program : Python
     }
     
     /// <summary>
-    /// Возвращает массив случайных чисел, по-заданному кол-ву чисел и в заданном диапазоне.
+    /// Возвращает массив случайных целых чисел, по-заданному кол-ву чисел и в заданном диапазоне.
     /// </summary>
     /// <param name="numberOfValues">Кол-во чисел.</param>
     /// <param name="minValue">Минимальное значение.</param>
@@ -273,6 +370,25 @@ class Program : Python
         for (int i = 0; i < numberOfValues; i++)
         {
             array[i] = rand.Next(minValue, maxValue);
+        }
+        
+        return array;
+    }
+
+    /// <summary>
+    /// Возвращает массив случайных чисел с плавающей точкой, по-заданному кол-ву чисел и в заданном диапазоне.
+    /// </summary>
+    /// <param name="numberOfValues">Кол-во элементов массива.</param>
+    /// <param name="minValue">Минимальное значение.</param>
+    /// <param name="maxValue">Максимальное значение.</param>
+    /// <returns>Одномерный массив.</returns>
+    private static double[] GenerateDoubleArray(int numberOfValues, int minValue, int maxValue)
+    {
+        double[] array = new double[numberOfValues];
+
+        for (int i = 0; i < numberOfValues; i++)
+        {
+            array[i] = Math.Round(RandomDouble(minValue, maxValue), 3);
         }
         
         return array;
