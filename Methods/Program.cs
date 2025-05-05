@@ -1,39 +1,31 @@
 ﻿namespace Methods;
 
-class Program : Python
+internal abstract class Program : Python
 {
     private static bool _check = true;
-    
     private static int[]? _array, _array2;
-    
     private static double[]? _doubleArray, _doubleArray1, _doubleArray2;
-    
     private static int[,]? _matrix;
-
     private static int _n, _j, _i, _m;
     
-    public static void Main(string[] args)
+    public static void Main()
     {
         print("Классы, методы");
-        
-        //Random rand = new Random();
 
         while (_check)
         {
-            int task = int.Parse(input("Введите задание: "));
+            var task = int.Parse(input("Введите задание: "));
 
             switch (task)
             {
                 case 1:
                     _n = int.Parse(input("Введите кол-во чисел в массиве: "));
-
                     _array = GenerateArray(_n, 0, 51);
                     
                     PrintArr("Полученный массив", _array);
 
-                    int znach = int.Parse(input("Значение которое не будет в новом массиве: "));
-                    
-                    _array = FilterExcludedValues(_array, znach);
+                    var value = int.Parse(input("Значение которое не будет в новом массиве: "));
+                    _array = FilterExcludedValues(_array, value);
                     
                     PrintArr("Отфильтрованный массив", _array);
                     
@@ -44,7 +36,7 @@ class Program : Python
                     
                     PrintArr("Полученный массив", _array);
 
-                    int index = int.Parse(input("Индекс элемента, который нужно убрать: "));
+                    var index = int.Parse(input("Индекс элемента, который нужно убрать: "));
                     
                     PrintArr("Полученный массив", _array = FilterExcludedIndexes(_array, index));
                     
@@ -57,10 +49,10 @@ class Program : Python
                     
                     PrintMatrix(_matrix);
 
-                    znach = int.Parse(input("Введите значение, которое нужно оставить: "));
-                    int znach1 = int.Parse(input("Введите значение, на которое нужно заменить оставшиеся элементы: "));
+                    value = int.Parse(input("Введите значение, которое нужно оставить: "));
+                    var value1 = int.Parse(input("Введите значение, на которое нужно заменить оставшиеся элементы: "));
                     
-                    _matrix = ChangeElements(_matrix, znach, znach1);
+                    _matrix = ChangeElements(_matrix, value, value1);
                     
                     PrintMatrix(_matrix);
                     
@@ -147,28 +139,32 @@ class Program : Python
         if (array.Length != array1.Length && array1.Length != array2.Length && array.Length != array1.Length)
             throw new ArgumentException("Кол-во элементов в массивах должно быть одинаково");
         
-        for (int i = 0; i < array.Length; i++)
+        for (var i = 0; i < array.Length; i++)
         {
             if (array[i] != 0)
             {
                 var d = Math.Pow(array1[i], 2) - 4 * array[i] * array2[i];
 
-                if (d > 0)
+                switch (d)
                 {
-                    var result = (-array1[i] + Math.Sqrt(d)) / (2 * array[i]);
-                    var result1 = (-array1[i] - Math.Sqrt(d)) / (2 * array[i]);
+                    case > 0:
+                    {
+                        var result = (-array1[i] + Math.Sqrt(d)) / (2 * array[i]);
+                        var result1 = (-array1[i] - Math.Sqrt(d)) / (2 * array[i]);
                     
-                    print($"Ответ {i + 1}-ых элементов = {result:F} и {result1:F}");
-                }
-                else if (d == 0)
-                {
-                    var result = -array1[i] / (2 * array[i]);
+                        print($"Ответ {i + 1}-ых элементов = {result:F} и {result1:F}");
+                        break;
+                    }
+                    case 0:
+                    {
+                        var result = -array1[i] / (2 * array[i]);
                     
-                    print($"Ответ {i + 1} элементов = {result:F}");
-                }
-                else
-                {
-                    print("Корней нет");
+                        print($"Ответ {i + 1} элементов = {result:F}");
+                        break;
+                    }
+                    default:
+                        print("Корней нет");
+                        break;
                 }
             }
             else
@@ -188,20 +184,20 @@ class Program : Python
     /// <returns>Двумерный массив.</returns>
     private static int[,] PrintGenerateMatrix(int rows, int columns, int minValue, int maxValue)
     {
-        Random rand = new Random();
-        int[,] matrix = new int[rows, columns];
+        var rand = new Random();
+        var matrix = new int[rows, columns];
 
-        for (int i = 0; i < rows; i++)
+        for (var i = 0; i < rows; i++)
         {
-            for (int j = 0; j < columns; j++)
+            for (var j = 0; j < columns; j++)
             {
                 matrix[i, j] = rand.Next(minValue, maxValue);
             }
         }
         
-        for (int i = 0; i < matrix.GetLength(0); i++)
+        for (var i = 0; i < matrix.GetLength(0); i++)
         {
-            for (int j = 0; j < matrix.GetLength(1); j++)
+            for (var j = 0; j < matrix.GetLength(1); j++)
             {
                 Console.Write(matrix[i,j] + "\t");
             }
@@ -221,9 +217,9 @@ class Program : Python
     {
         var count = 0;
 
-        for (int i = 0; i < matrix.GetLength(0); i++)
+        for (var i = 0; i < matrix.GetLength(0); i++)
         {
-            for (int j = 0; j < matrix.GetLength(1); j++)
+            for (var j = 0; j < matrix.GetLength(1); j++)
             {
                 if (matrix[i, j] == maxElement)
                     count++;
@@ -242,9 +238,9 @@ class Program : Python
     {
         var max = int.MinValue;
 
-        for (int i = 0; i < matrix.GetLength(0); i++)
+        for (var i = 0; i < matrix.GetLength(0); i++)
         {
-            for (int j = 0; j < matrix.GetLength(1); j++)
+            for (var j = 0; j < matrix.GetLength(1); j++)
             {
                 if(matrix[i,j] > max)
                     max = matrix[i,j];
@@ -288,13 +284,8 @@ class Program : Python
     /// <returns>Одномерный массив.</returns>
     private static long CalculateProduct(int[] array)
     {
-        long product = 1;
-        foreach (var num in array)
-        {
-            product *= num;
-        }
-        
-        return product;
+        return array.Aggregate<int, long>
+            (1, (current, num) => current * num);
     }
     
     /// <summary>
@@ -316,19 +307,19 @@ class Program : Python
     /// Заменяет все элементы в матрице, оставляя только нужные.
     /// </summary>
     /// <param name="matrix">Матрица, в которой нужно произвести замену.</param>
-    /// <param name="znach">Значение, которое нужно оставить.</param>
-    /// <param name="znach1">Значение, на которое нужно заменить оставшиеся элементы.</param>
+    /// <param name="value">Значение, которое нужно оставить.</param>
+    /// <param name="value1">Значение, на которое нужно заменить оставшиеся элементы.</param>
     /// <returns>Двумерный массив.</returns>
-    private static int[,] ChangeElements(int[,] matrix, int znach, int znach1)
+    private static int[,] ChangeElements(int[,] matrix, int value, int value1)
     {
-        for (int i = 0; i < matrix.GetLength(0); i++)
+        for (var i = 0; i < matrix.GetLength(0); i++)
         {
-            for (int j = 0; j < matrix.GetLength(1); j++)
+            for (var j = 0; j < matrix.GetLength(1); j++)
             {
-                if (matrix[i, j] == znach)
+                if (matrix[i, j] == value)
                     continue;
                 
-                matrix[i, j] = znach1;
+                matrix[i, j] = value1;
             }
         }
         
@@ -343,18 +334,18 @@ class Program : Python
     /// <returns>Одномерный массив.</returns>
     private static int[] FilterExcludedIndexes(int[] array, int index)
     {
-        return array.Where((value, i) => i != index).ToArray();
+        return array.Where((_, i) => i != index).ToArray();
     }
     
     /// <summary>
     /// Убирает из массива введенное значение.
     /// </summary>
     /// <param name="array">Массив из которого нужно убрать значение.</param>
-    /// <param name="znach">Значение которое нужно убрать.</param>
+    /// <param name="value">Значение которое нужно убрать.</param>
     /// <returns>Одномерный массив.</returns>
-    private static int[] FilterExcludedValues(int[] array, int znach)
+    private static int[] FilterExcludedValues(int[] array, int value)
     {
-        return array.Where(x => x != znach).ToArray();
+        return array.Where(x => x != value).ToArray();
     }
     
     /// <summary>
@@ -366,10 +357,10 @@ class Program : Python
     /// <returns>Одномерный массив.</returns>
     private static int[] GenerateArray(int numberOfValues, int minValue, int maxValue)
     {
-        Random rand = new Random();
-        int[] array = new int[numberOfValues];
+        var rand = new Random();
+        var array = new int[numberOfValues];
         
-        for (int i = 0; i < numberOfValues; i++)
+        for (var i = 0; i < numberOfValues; i++)
         {
             array[i] = rand.Next(minValue, maxValue);
         }
@@ -386,9 +377,9 @@ class Program : Python
     /// <returns>Одномерный массив.</returns>
     private static double[] GenerateDoubleArray(int numberOfValues, int minValue, int maxValue)
     {
-        double[] array = new double[numberOfValues];
+        var array = new double[numberOfValues];
 
-        for (int i = 0; i < numberOfValues; i++)
+        for (var i = 0; i < numberOfValues; i++)
         {
             array[i] = Math.Round(RandomDouble(minValue, maxValue), 3);
         }
@@ -406,12 +397,12 @@ class Program : Python
     /// <returns>Двумерный массив.</returns>
     private static int[,] GenerateMatrix(int rows, int columns, int minValue, int maxValue)
     {
-        Random rand = new Random();
-        int[,] matrix = new int[rows, columns];
+        var rand = new Random();
+        var matrix = new int[rows, columns];
 
-        for (int i = 0; i < rows; i++)
+        for (var i = 0; i < rows; i++)
         {
-            for (int j = 0; j < columns; j++)
+            for (var j = 0; j < columns; j++)
             {
                 matrix[i, j] = rand.Next(minValue, maxValue);
             }
